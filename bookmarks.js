@@ -105,7 +105,7 @@ function updateRelatedTags(tag)
     $("#related").html("");
     for (t in cleanKeys)
     {
-        $("#related").append("<a class=\"tagfilter\" href=\"#" + encodeURIComponent(cleanKeys[t]) + "\">" + cleanKeys[t] + "</a>, ");
+        $("#related").append("<a class=\"tagfilter\" href=\"#" + encodeURIComponent(cleanKeys[t]) + "\">" + cleanKeys[t] + "</a>");
     }
 
     /** Remove trailing ", ". */
@@ -142,7 +142,7 @@ function addBookmark() {
     }
 
     var current = document.getElementById("bookmarks").innerHTML;
-    var entry = '<li id="newOne" title="' + description + '" time="' + secs + '" tags="'+tags+'" ><a href="' + link + '">' + name + '</a></li>';
+    var entry = '<li id="newOne" title="' + description + '" time="' + secs + '" tags="'+tags+'" ><a href="' + link + '" target="_blank" >' + name + '</a></li>';
     current = current + entry;
     document.getElementById("bookmarks").innerHTML = current;
     populateTags();
@@ -360,6 +360,7 @@ function editBookmark (selector) {
         // save form
         selector.find('> a').html($('#newName').val());
         selector.find('> a').attr('href', $('#newLink').val());
+        selector.find('> a').attr('target', '_blank');
         selector.attr('title', $('#newDescription').val());
         selector.attr('time', $('#newTime').val());
         selector.attr('description', $('#newDescription').val());
