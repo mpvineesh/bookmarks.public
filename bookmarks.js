@@ -20,7 +20,7 @@ function clearFilter() {
  */
 function showUntagged() {
     $("#bookmarks").children().each(function () {
-        var tags = $(this).attr('title');
+        var tags = $(this).attr('tags');
         (typeof tags !== 'undefined') ? $(this).hide() : $(this).show();
     });
     updateTitle();
@@ -58,7 +58,7 @@ function updateRelatedTags(tag)
      */
     var avail = "";
     $("#bookmarks").children().each(function () {
-        var tags = $(this).attr('title');
+        var tags = $(this).attr('tags');
         if ((typeof tags !== 'undefined') && (tags.toLowerCase().match(decodeURIComponent(tag))))
         {
             avail += "," + tags;
@@ -131,6 +131,7 @@ function addBookmark() {
     var name = $("#newName").val();
     var link = $("#newLink").val();
     var tags = $("#newTags").val();
+    var description = $("#newDescription").val();
 
     var date = new Date();
     var secs = Math.trunc(date.getTime() / 1000);
@@ -141,14 +142,14 @@ function addBookmark() {
     }
 
     var current = document.getElementById("bookmarks").innerHTML;
-    var entry = '<li id="newOne" title="' + tags + '" time="' + secs + '"><a href="' + link + '">' + name + '</a></li>';
+    var entry = '<li id="newOne" title="' + description + '" time="' + secs + '" tags="'+tags+'" ><a href="' + link + '">' + name + '</a></li>';
     current = current + entry;
     document.getElementById("bookmarks").innerHTML = current;
     populateTags();
     // Append tag to the newly added bookmark
     $("#bookmarks").children().each(function () {
         var id = $(this).attr("id");
-        var tag = $(this).attr("title");
+        var tag = $(this).attr("tags");
         if (id === "newOne")
         {
             if (tagsVisible && tag) {
@@ -170,7 +171,7 @@ function collectTags()
 {
     var tags = {};
     $("#bookmarks").children().each(function () {
-        var tag = $(this).attr("title");
+        var tag = $(this).attr("tags");
         if (typeof tag !== 'undefined')
         {
             if (tag.match(","))
@@ -212,7 +213,7 @@ function populateTags() {
     $("#autotags").html("");
     for (t in tags)
     {
-        $("#autotags").append("<a class=\"tagfilter\" href=\"#" + encodeURIComponent(tags[t]) + "\">" + tags[t] + "</a>, ");
+        $("#autotags").append("<a class=\"tagfilter\" href=\"#" + encodeURIComponent(tags[t]) + "\">" + tags[t] + "</a>");
     }
 
     /** Remove trailing ", ". */
@@ -245,7 +246,7 @@ function decorate(entry, tag) {
     {
         var nm = array[i];
         nm = nm.replace(/(^\s+|\s+$)/g, '');
-        txt += "<a class=\"tagfilter\" href=\"#" + encodeURIComponent(nm) + "\">" + nm + "</a>, ";
+        txt += "<a class=\"tagfilter\" href=\"#" + encodeURIComponent(nm) + "\">" + nm + "</a> ";
     }
 
     /** Remove trailing ", ". */
@@ -260,7 +261,7 @@ function decorate(entry, tag) {
 function showTags()
 {
     $("#bookmarks").children().each(function () {
-        var tag = $(this).attr("title");
+        var tag = $(this).attr("tags");
         if (typeof tag !== 'undefined')
         {
             decorate($(this), tag);
@@ -274,7 +275,7 @@ function showTags()
 function hideTags()
 {
     $("#bookmarks").children().each(function () {
-        var tag = $(this).attr("title");
+        var tag = $(this).attr("tags");
         if (typeof tag !== 'undefined')
         {
             var tagsStripped = $(this).html().replace(/<ul><li>.*<\/li><\/ul>/, "\n");
@@ -311,7 +312,7 @@ function updateView()
 
     var tag = window.location.hash.substring(1);
     $("#bookmarks").children().each(function () {
-        var tags = $(this).attr('title');
+        var tags = $(this).attr('tags');
         ((typeof tags !== 'undefined') && (tags.toLowerCase().match(decodeURIComponent(tag))))
             ? $(this).show() : $(this).hide();
     });
@@ -347,7 +348,8 @@ function editBookmark (selector) {
     // load form
     $('#newName').val(selector.find('> a').html());
     $('#newLink').val(selector.find('> a').attr('href'));
-    $('#newTags').val(selector.attr('title'));
+    $('#newTags').val(selector.attr('tags'));
+    $('#newDescription').val(selector.attr('title'));
     $('#newTime').val(selector.attr('time') || now );
 
     // switch to editing mode
@@ -358,8 +360,9 @@ function editBookmark (selector) {
         // save form
         selector.find('> a').html($('#newName').val());
         selector.find('> a').attr('href', $('#newLink').val());
-        selector.attr('title', $('#newTags').val());
+        selector.attr('title', $('#newDescription').val());
         selector.attr('time', $('#newTime').val());
+        selector.attr('description', $('#newDescription').val());
         // update tags
         toggleTags();
         toggleTags();

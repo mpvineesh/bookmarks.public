@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN"
-          "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>My Bookmarks</title>
@@ -69,6 +68,7 @@
                 <tr><td>Name:</td><td><input type="text" name="newname" id="newName" value="" size="50" /></td></tr>
                 <tr><td>Link:</td><td><input type="text" name="newLink" id="newLink" value="" size="50" /></td></tr>
                 <tr><td>Tags:</td><td><input type="text" name="newTags" id="newTags" value="" size="50" /></td></tr>
+                <tr><td>Description:</td><td><textarea name="newDescription" id="newDescription" cols="52"/></textarea></td></tr>
 
                 <tr><td colspan="2" style="text-align:right">
                   <button class="whenadd" type="button" onclick="addBookmark()">Add</button>
@@ -82,14 +82,14 @@
           <fieldset>
             <legend><b>Save Data </b></legend>
             <form id="saveForm" name="newForm">
-              <button type="button" onclick="saveDataFile()">Save...</button>
+              <button type="button" onclick="saveDataFile()">Export</button>
             </form>
           </fieldset>
         </td>
       </tr>
     </table>
     <p id="footer">
-      <a href="https://github.com/skx/bookmarks.public/">bookmarks.public</a> by <a href="https://steve.kemp.fi">Steve Kemp</a>.
+     
       </p>
   </body>
 </html>
