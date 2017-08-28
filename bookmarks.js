@@ -2,6 +2,7 @@
  * Default to showing tags.
  */
 var tagsVisible = true;
+var unsavedDataExist = true;
 
 
 /**
@@ -119,9 +120,10 @@ function updateRelatedTags(tag)
  */
 function updateTitle()
 {
-    var count = $("#bookmarks > li:visible").length;
+    /*var count = $("#bookmarks > li:visible").length;
     var plural = ((count === 0) || (count > 1)) ? 's' : '';
     document.title = count + " visible bookmark" + plural;
+	*/
 }
 
 /**
@@ -161,6 +163,7 @@ function addBookmark() {
     var form = document.getElementById("newForm");
     form.reset();
     setupEditRemove();
+	unsavedDataExist = true;
 }
 
 /**
@@ -333,6 +336,7 @@ function doneEditBookmark () {
     $('#newName').val('');
     $('#newLink').val('');
     $('#newTags').val('');
+    $('#newDescription').val('');
     // switch form to adding mode
     $('.whenedit').hide();
     $('.whenadd').show();
@@ -440,6 +444,15 @@ function setupAutocomplete () {
     });
 }
 
+function checkIfSaved(){
+		if(unsavedDataExist){
+			var confirmReload = confirm("You have unsaved data, do you want to reload?");
+			if(!confirmReload){
+					return false;
+			}
+		}		
+}	
+
 /**
  * Handle URL parameters to add a bookmark
  */
@@ -470,8 +483,8 @@ function handleParams () {
  * initial state + listeners.
  */
 function setup () {
-
-    $("#bookmarks").load("bookmarks.data",function() {
+	var d = new Date();
+    $("#bookmarks").load("bookmarks.data?t="+d.getTime(),function() {
 
         /** Sort the bookmarks */
         sortBookmarks();
@@ -527,6 +540,8 @@ function setup () {
 
         /** Handle URL parameters */
         handleParams();
+		/* Hide tags initial page loading*/
+		hideTags();
     });
 }
 
